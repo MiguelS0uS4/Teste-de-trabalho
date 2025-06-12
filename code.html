@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>site teste kevin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      color: #222;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+    h1, h2, h3 {
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      color: #1f2937;
+    }
+    p {
+      margin: 0;
+      color: #4b5563;
+    }
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      padding: 10px 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 2px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+
+    main {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: 24px;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      main {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .header-container {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8px;
+      border-bottom: 1px solid #e5e7eb;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      background: #f9fafb;
+      z-index: 10;
+    }
+
+    .site-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e40af;
+    }
+
+    /* OS Card */
+    .os-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      padding: 24px 24px 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 350px;
+    }
+    .os-icon {
+      font-size: 48px;
+      color: #3b82f6;
+      user-select: none;
+    }
+    .os-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .os-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1f2937;
+      user-select: none;
+    }
+    .os-short-desc {
+      color: #6b7280;
+      font-size: 0.95rem;
+      flex-grow: 1;
+    }
+
+    .toggle-content-btn {
+      margin-top: auto;
+      justify-content: center;
+      gap: 8px;
+    }
+    .toggle-content-btn .material-icons {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+    .toggle-content-btn[aria-expanded="true"] .material-icons {
+      transform: rotate(180deg);
+    }
+
+    .os-details {
+      margin-top: 16px;
+      color: #374151;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 16px;
+      display: none;
+    }
+    .os-details.show {
+      display: block;
+    }
+    .os-section-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #2563eb;
+    }
+    ul {
+      margin: 0 0 12px 20px;
+      padding: 0;
+      color: #4b5563;
+    }
+
+    /* Comparison Section */
+    #comparison-section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.1);
+      padding: 24px;
+      margin-top: 40px;
+      max-width: 1200px;
+      width: 100%;
+      display: none;
+      overflow-x: auto;
+    }
+    #comparison-section.show {
+      display: block;
+    }
+
+    #comparison-section h2 {
+      margin-bottom: 24px;
+      color: #1e40af;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    th, td {
+      padding: 14px 20px;
+      text-align: center;
+      border-bottom: 1px solid #d1d5db;
+    }
+    th {
+      background: #3b82f6;
+      color: white;
+      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tr:nth-child(even) td {
+      background: #f3f4f6;
+    }
+
+    /* Accessibility and focus */
+    .focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="header-container" role="banner">
+    <h1 class="site-title">site teste kevin</h1>
+    <button id="btn-comparison" aria-expanded="false" aria-controls="comparison-section" aria-label="Mostrar ou esconder comparação dos sistemas operacionais">
+      <span class="material-icons" aria-hidden="true">compare_arrows</span> Comparar Sistemas
+    </button>
+  </header>
+
+  <main role="main">
+    <article class="os-card" id="os-windows" aria-labelledby="windows-title">
+      <div class="os-header">
+        <span class="material-icons os-icon" aria-hidden="true" title="Windows Icon">computer_windows</span>
+        <h2 id="windows-title" class="os-name">Windows</h2>
+      </div>
+      <p class="os-short-desc">Sistema operacional mais usado mundialmente, ideal para jogos e compatibilidade ampla.</p>
+      <button class="toggle-content-btn" aria-expanded="false" aria-controls="windows-details">
+        Saiba mais
+        <span class="material-icons" aria-hidden="true">expand_more</span>
+      </button>
+      <section id="windows-details" class="os-details" aria-hidden="true">
+        <h3 class="os-section-title">Vantagens</h3>
+        <ul>
+          <li>Grande compatibilidade de software e hardware.</li>
+          <li>Excelente suporte para jogos.</li>
+          <li>Interface familiar e intuitiva.</li>
+          <li>Ampla comunidade e suporte.</li>
+        </ul>
+
+        <h3 class="os-section-title">Desvantagens</h3>
+        <ul>
+          <li>Maior vulnerabilidade a vírus e malwares.</li>
+          <li>Algumas versões pagas podem ser caras.</li>
+          <li>Pode ser pesado em máquinas mais antigas.</li>
+        </ul>
+      </section>
+    </article>
+
+    <article class="os-card" id="os-linux" aria-labelledby="linux-title">
+      <div class="os-header">
+        <span class="material-icons os-icon" aria-hidden="true" title="Linux Icon">memory</span>
+        <h2 id="linux-title" class="os-name">Linux</h2>
+      </div>
+      <p class="os-short-desc">Sistema operacional open-source, extremamente customizável e muito usado em servidores.</p>
+      <button class="toggle-content-btn" aria-expanded="false" aria-controls="linux-details">
+        Saiba mais
+        <span class="material-icons" aria-hidden="true">expand_more</span>
+      </button>
+      <section id="linux-details" class="os-details" aria-hidden="true">
+        <h3 class="os-section-title">Vantagens</h3>
+        <ul>
+          <li>Gratuito e open-source.</li>
+          <li>Altamente seguro e estável.</li>
+          <li>Grande comunidade de suporte.</li>
+          <li>Customização completa do sistema.</li>
+        </ul>
+
+        <h3 class="os-section-title">Desvantagens</h3>
+        <ul>
+          <li>Curva de aprendizado para iniciantes.</li>
+          <li>Menor suporte para jogos comerciais.</li>
+          <li>Compatibilidade limitada com certos softwares.</li>
+        </ul>
+      </section>
+    </article>
+
+    <article class="os-card" id="os-mac" aria-labelledby="mac-title">
+      <div class="os-header">
+        <span class="material-icons os-icon" aria-hidden="true" title="Mac Icon">apple</span>
+        <h2 id="mac-title" class="os-name">MacOS</h2>
+      </div>
+      <p class="os-short-desc">Sistema exclusivo da Apple, conhecido pela estabilidade e integração com outros dispositivos Apple.</p>
+      <button class="toggle-content-btn" aria-expanded="false" aria-controls="mac-details">
+        Saiba mais
+        <span class="material-icons" aria-hidden="true">expand_more</span>
+      </button>
+      <section id="mac-details" class="os-details" aria-hidden="true">
+        <h3 class="os-section-title">Vantagens</h3>
+        <ul>
+          <li>Interface polida e integrações com dispositivos Apple.</li>
+          <li>Alta estabilidade e segurança.</li>
+          <li>Bom suporte para edição de vídeo e áudio.</li>
+          <li>Atualizações regulares e otimizadas.</li>
+        </ul>
+
+        <h3 class="os-section-title">Desvantagens</h3>
+        <ul>
+          <li>Disponível apenas em hardware Apple.</li>
+          <li>Menor variedade de jogos.</li>
+          <li>Mais caro em custo inicial.</li>
+        </ul>
+      </section>
+    </article>
+
+    <article class="os-card" id="os-chrome" aria-labelledby="chrome-title">
+      <div class="os-header">
+        <span class="material-icons os-icon" aria-hidden="true" title="Chrome OS Icon">laptop_chromebook</span>
+        <h2 id="chrome-title" class="os-name">Chrome OS</h2>
+      </div>
+      <p class="os-short-desc">Sistema leve focado em computação na nuvem, ideal para uso básico e educação.</p>
+      <button class="toggle-content-btn" aria-expanded="false" aria-controls="chrome-details">
+        Saiba mais
+        <span class="material-icons" aria-hidden="true">expand_more</span>
+      </button>
+      <section id="chrome-details" class="os-details" aria-hidden="true">
+        <h3 class="os-section-title">Vantagens</h3>
+        <ul>
+          <li>Interface simples e fácil de usar.</li>
+          <li>Rápido e com ótimo desempenho em hardware básico.</li>
+          <li>Forte integração com serviços Google.</li>
+          <li>Segurança por design e atualizações automáticas.</li>
+        </ul>
+
+        <h3 class="os-section-title">Desvantagens</h3>
+        <ul>
+          <li>Dependente da internet para funcionalidades completas.</li>
+          <li>Limitado para softwares tradicionais.</li>
+          <li>Menor suporte para jogos e edição profissional.</li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <section id="comparison-section" aria-label="Comparação dos sistemas operacionais">
+    <h2>Comparação dos Sistemas Operacionais</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Critério</th>
+          <th>Windows</th>
+          <th>Linux</th>
+          <th>MacOS</th>
+          <th>Chrome OS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Desempenho</td>
+          <td>Bom em geral, mas pode ser pesado em hardware antigo</td>
+          <td>Excelente, pode ser leve e ajustado conforme a máquina</td>
+          <td>Otimizado para hardware Apple, muito estável</td>
+          <td>Rápido e leve, mas dependente da nuvem</td>
+        </tr>
+        <tr>
+          <td>Jogos</td>
+          <td>Grande suporte e compatibilidade ampla</td>
+          <td>Limitado, mas melhorando com Proton/Wine</td>
+          <td>Limitado, poucos títulos nativos</td>
+          <td>Muito limitado, básico ou por streaming</td>
+        </tr>
+        <tr>
+          <td>Edição (Vídeo, Áudio, Foto)</td>
+          <td>Bom, muitos softwares disponíveis</td>
+          <td>Variado, menos softwares comerciais</td>
+          <td>Excelente, foco profissional com apps nativos</td>
+          <td>Limitado a apps web e Android</td>
+        </tr>
+        <tr>
+          <td>Segurança</td>
+          <td>Sofre mais ataques, mas com boas defesas</td>
+          <td>Muito seguro se corretamente configurado</td>
+          <td>Seguro e com atualizações controladas</td>
+          <td>Seguro por design e atualizações automáticas</td>
+        </tr>
+        <tr>
+          <td>Preço</td>
+          <td>Geralmente pago, exceto versões OEM</td>
+          <td>Gratuito e open-source</td>
+          <td>Custo alto pelo hardware Apple</td>
+          <td>Baixo custo, hardware acessível</td>
+        </tr>
+        <tr>
+          <td>Compatibilidade Software</td>
+          <td>Alta, quase tudo que existe</td>
+          <td>Boa, mas algumas limitações</td>
+          <td>Boa para apps Apple, limitado para outros</td>
+          <td>Focado em apps web e Android</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script>
+    // Toggle each OS details
+    document.querySelectorAll('.toggle-content-btn').forEach(button => {
+      button.addEventListener('click', function(){
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        const contentId = this.getAttribute('aria-controls');
+        const content = document.getElementById(contentId);
+        if (!content) return;
+        if (expanded) {
+          this.setAttribute('aria-expanded', 'false');
+          content.classList.remove('show');
+          content.setAttribute('aria-hidden', 'true');
+        } else {
+          this.setAttribute('aria-expanded', 'true');
+          content.classList.add('show');
+          content.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+
+    // Toggle comparison section
+    const btnComparison = document.getElementById('btn-comparison');
+    const comparisonSection = document.getElementById('comparison-section');
+
+    btnComparison.addEventListener('click', () => {
+      const expanded = btnComparison.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        btnComparison.setAttribute('aria-expanded', 'false');
+        comparisonSection.classList.remove('show');
+      } else {
+        btnComparison.setAttribute('aria-expanded', 'true');
+        comparisonSection.classList.add('show');
+        comparisonSection.focus();
+      }
+    });
+  </script>
+</body>
+</html>
+
